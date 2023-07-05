@@ -1,0 +1,171 @@
+# Sky Scanner API Doc
+
+Interface description: Obtain flight information.
+
+URL: [https://www.skywinghub.com/website/shopping](https://www.skywinghub.com/website/shopping)
+
+Request method: POST
+
+Request parameters:
+
+- `flightType` (string): flight type, the value is "OW" (one-way), "RT" (round-trip).
+- `cabinType` (string): Cabin type, the value is "E" (economy class, super economy class), "B" (first class, business class), etc.
+- `passenger` (array): Passenger information array, including the following fields:
+    - `name` (string): Passenger type, such as "Adult", "Children" or "Infants".
+    - `count` (integer): The number of passengers.
+    - `flag` (string): Passenger type flag, such as "ADT" (adult), "CHD" (child) or "INF" (infant).
+- `tripSearch` (array): an array of trip searches, including the following fields:
+    - `depart` (string): Departure, eg "TYO".
+    - `arrive` (string): Destination, eg "SHA".
+    - `departTime` (string): Departure date in the format "yyyy-MM-dd", eg "2023-05-31".
+- `currency` (string): Currency type, such as "HKD".
+- `locale` (string): visit the site, such as "CN",
+- `language` (string): The language of the website, such as "tc"
+
+Response data structure:
+
+- `sessionid` (string): Session ID.
+- `status` (boolean): request status, true for success, false for failure.
+- `msg` (string): The returned message.
+- `content` (array): An array containing the query results.
+    - `shoppingId` (string): Product ID.
+    - `redisCode` (string): product code.
+    - `redisSchema` (string): Product traceability code.
+    - `segmentSchema` (string): segment traceability code.
+    - `currency` (string): Currency type.
+    - `flightGroupInfoList` (array): List of flight group information.
+        - `flightId` (string): Flight ID.
+        - `arriveMultCityName` (string): Arrival city name.
+        - `arriveDateTimeFormat` (string): Arrival time in the format "yyyy-MM-ddThh:mm:ss", for example ""2023-05-28T15:55:00+08:00"".
+        - `departDateTimeFormat` (string): Departure time in the format "yyyy-MM-ddThh:mm:ss", for example ""2023-05-28T15:55:00+08:00"".
+        - `departMultCityName` (string): Departure city name.
+        - `flightTripTitle` (string): Title of the flight itinerary.
+        - `duration` (object): The duration.
+            - `h` (string): The hour.
+            - `m` (string): minutes.
+        - `flightSegments` (array): List of flight segments.
+            - `segmentId` (string): segment ID.
+            - `aDateTime` (string): Arrival time in the format "yyyy-MM-ddThh:mm:ss", for example ""2023-05-28T15:55:00+08:00"".
+            - `dDateTime` (string): Departure time, the format is "yyyy-MM-ddThh:mm:ss", for example ""2023-05-28T15:55:00+08:00"".
+            - `dCityInfo` (object): Departure city information.
+                - `code` (string): City code.
+                - `name` (string): The name of the city.
+            - `aCityInfo` (object): Arrival city information.
+                - `code` (string): City code.
+                - `name` (string): The name of the city.
+            - `dPortInfo` (object): Departure airport information.
+                - `code` (string): Airport code.
+                - `name` (string): The name of the airport.
+                - `terminal` (string): The terminal.
+            - `aPortInfo` (object): Arrival airport information.
+                - `code` (string): Airport code.
+                - `name` (string): The name of the airport.
+                - `terminal` (string): The terminal.
+            - `acrossDays` (integer): Across days.
+            - `airlineInfo` (object): airline information.
+                - `code` (string): Airline code.
+                - `name` (string): The airline name.
+                - `isLCC` (boolean): Whether it is a low-cost airline.
+            - `craftInfo` (object): model information.
+                - `name` (string): Model name.
+                - `minSeats` (integer, nullable): The minimum number of seats.
+                - `maxSeats` (integer, nullable): The maximum number of seats.
+                - `widthLevel` (string): Width level.
+                - `craftType` (string): Craft code.
+            - `cabinClass` (string): Cabin class.
+            - `subClass` (string): Subclass class.
+            - `durationInfo` (object): Duration information.
+                - `hour` (string): The hour.
+                - `min` (string): The minute.
+            - `stopInfoList` (array): list of stop information.
+                - `code` (string): Airport code.
+                - `name` (string): The name of the airport.
+                - `terminal` (string): The terminal.
+            - `flightNo` (string): The flight number.
+            - `segmentNo` (integer): segment number.
+    - `policyDetailInfo` (object): Policy details.
+        - `priceId` (string): The price ID.
+        - `avgPrice` (string): The average price.
+        - `totalPrice` (string): The total price.
+        - `ticketDeadlineType` (integer): The ticket deadline type. 1: Fast ticket issuance, 2: Slow ticket issuance
+        - `adultPrice` (object): The adult price.
+            - `salePrice` (string): The sale price.
+            - `tax` (string): Tax.
+        - `childPrice` (object): The child price.
+            - `salePrice` (string): The sale price.
+            - `tax` (string): Tax.
+        - `infantPrice` (object): The infant price.
+            - `salePrice` (string): The sale price.
+            - `tax` (string): Tax.
+        - `limitInfo` (object): limit information.
+            - `availableSeatCount` (integer): The number of available seats.
+            - `nationalityLimit` (array): A list of nationality limits.
+                - `nationalCode` (string): Nationality code.
+    - `policyInfo` (object): Policy information.
+        - `baggageInfoList` (array): Baggage information list.
+            - `checkedNote` (string): Description of checked baggage.
+            - `checkedFormatted` (object): Checked baggage formatted information.
+                - `adultDetail` (object): Adult details.
+                    - `description` (string): Description.
+                    - `weightAndPieceDesc` (string): weight and piece description.
+                    - `weight` (integer): The weight.
+                    - `piece` (integer): the number of pieces.
+                - `childDetail` (object): Child detail information.
+                    - `description` (string): Description.
+                    - `weightAndPieceDesc` (string): weight and piece description.
+                    - `weight` (integer): The weight.
+                    - `piece` (integer): the number of pieces.
+                - `infantDetail` (object): The infant detail.
+                    - `description` (string): Description.
+                    - `weightAndPieceDesc` (string): weight and piece description.
+                    - `weight` (integer): The weight.
+                    - `piece` (integer): the number of pieces.
+            - `handNote` (string): hand luggage notes.
+            - `handFormatted` (object): hand baggage formatted information.
+                - `adultDetail` (object): Adult details.
+                    - `description` (string): Description.
+                    - `weightAndPieceDesc` (string): weight and piece description.
+                    - `weight` (integer): The weight.
+                    - `piece` (integer): the number of pieces.
+                - `childDetail` (object): Child detail information.
+                    - `description` (string): Description.
+                    - `weightAndPieceDesc` (string): weight and piece description.
+                    - `weight` (integer): The weight.
+                    - `piece` (integer): the number of pieces.
+                - `infantDetail` (object): The infant detail.
+                    - `description` (string): Description.
+                    - `weightAndPieceDesc` (string): the weight Quantity and piece count description.
+                    - `weight` (integer): The weight.
+                    - `piece` (integer): the number of pieces.
+    - `penaltyInfoList` (array): A list of cancellation information.
+        - `cancelInfo` (object): Cancellation information.
+            - `note` (string): Note.
+            - `formatted` (object): formatted information.
+                - `adultList` (array): list of adults.
+                    - `specialText` (string): Special text.
+                    - `timeText` (string): time text.
+                - `childList` (array): List of children
+                    - `specialText` (string): Special text.
+                    - `timeText` (string): time text.
+                - `infantList` (array): List of babies.
+                    - `specialText` (string): Special text.
+                    - `timeText` (string): time text.
+            - `firstTimeChangeFreeNote` (string): First time change free note.
+        - `changeInfo` (object): Change information.
+            - `note` (string): Note.
+            - `formatted` (object): formatted information.
+                - `adultList` (array): list of adults.
+                    - `specialText` (string): Special text.
+                    - `timeText` (string): time text.
+                - `childList` (array): List of children
+                    - `specialText` (string): Special text.
+                    - `timeText` (string): time text.
+                - `infantList` (array): List of babies.
+                    - `specialText` (string): Special text.
+                    - `timeText` (string): time text.
+            - `firstTimeChangeFreeNote` (string): First time change free note.
+        - `endorsementNote` (string): endorsement note.
+        - `specialNote` (string): Special notes.
+        - `noShowCondition` (string): no show condition.
+        - `partialUseChangeInfo` (string): Partial use change information.
+    - `deeplink` (string): Jump link.
