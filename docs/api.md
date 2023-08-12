@@ -21,6 +21,7 @@ Request parameters:
 - `currency` (string): Currency type, such as "HKD".
 - `locale` (string): visit the site, such as "CN",
 - `language` (string): The language of the website, such as "tc"
+- `mktportal` (string): "skyscanner",this is a constant
 
 Response data structure:
 
